@@ -32,8 +32,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Box
         bgcolor="#141a21"
-        height="100vh"
-        width="100vw"
+        // height="100vh"
+        // width="100vw"
         display="flex"
         flexDirection="column"
       >
@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Box display="flex">
           <Sidebar />
           {/* Dynamically Render the Active Component Inside Layout */}
-          <Box bgcolor="#191727" flex={1} p={3}>
+          <Box flex={1} p={3}>
             {activeComponent} {/* Renders dynamic page content */}
           </Box>
         </Box>
