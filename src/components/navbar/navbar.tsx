@@ -17,7 +17,7 @@ const Navbar = () => {
         </Box>
         <Box>
           {/* center part */}
-          <Typography>DATA VIEWER APP</Typography>
+          <Typography color="white">DATA VIEWER APP</Typography>
         </Box>
         <Box>
           {/* accoubnt */}

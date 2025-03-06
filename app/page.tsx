@@ -1,55 +1,53 @@
 "use client";
-import { Box, Typography } from "@mui/material";
-import Navbar from "./components/navbar/navbar";
-import Sidebar from "./components/sidebar/sidebar";
+import { Box } from "@mui/material";
+import Navbar from "../src/components/navbar/navbar";
+import Sidebar from "../src/components/sidebar/sidebar";
+import StoreComponent from "../src/components/storeComponents/storeComponent";
+import PlanningComponent from "../src/components/planningComponents/planningComponent";
+import SKUComponent from "../src/components/skuComponents/skuComponent";
+import ChartComponent from "../src/components/chartComponents/chartComponent";
+import { usePathname } from "next/navigation";
+import { JSX, useEffect, useState } from "react";
 
-export default function Home() {
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [activeComponent, setActiveComponent] = useState<JSX.Element | null>(
+    null
+  );
+
+  useEffect(() => {
+    // Function to determine which component to show
+    const getActiveComponent = () => {
+      if (pathname === "/") return <StoreComponent />; // Default to store
+      if (pathname.includes("/store")) return <StoreComponent />;
+      if (pathname.includes("/planning")) return <PlanningComponent />;
+      if (pathname.includes("/sku")) return <SKUComponent />;
+      if (pathname.includes("/chart")) return <ChartComponent />;
+      return null;
+    };
+
+    setActiveComponent(getActiveComponent());
+  }, [pathname]); // Re-run when pathname changes
+
   return (
     <Box
-      bgcolor={"#141a21"}
-      height={"100vh"}
-      width={"100vw"}
+      bgcolor="#141a21"
+      height="100vh"
+      width="100vw"
       display="flex"
       flexDirection="column"
     >
       {/* Navbar */}
-      <Box
-        height={80}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        px={2}
-      >
+      <Box height={80} display="flex" alignItems="center" px={2}>
         <Navbar />
       </Box>
 
-      {/* Main Container: Sidebar + Content */}
-      <Box display="flex" flex={1}>
-        {
-          <Box
-            width={{ xs: 200, md: 200 }}
-            display="flex"
-            flexDirection="column"
-            p={2}
-            sx={{
-              position: { xs: "absolute", md: "relative" },
-              height: "100vh",
-              zIndex: 10,
-            }}
-          >
-            <Sidebar />
-          </Box>
-        }
-
-        {/* Content */}
-        <Box
-          bgcolor={"#191f27"}
-          flex={1}
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography color="white">CONTENT</Typography>
+      {/* Sidebar + Content */}
+      <Box display="flex">
+        <Sidebar />
+        {/* Dynamically Render the Active Component Inside Layout */}
+        <Box bgcolor="#191727" flex={1} p={3}>
+          {activeComponent} {/* Renders dynamic page content */}
         </Box>
       </Box>
     </Box>
