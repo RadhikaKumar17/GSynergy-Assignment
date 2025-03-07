@@ -1,39 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid, gridClasses, GridColDef } from "@mui/x-data-grid";
-import { Box, IconButton, Button, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Button,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { toast } from "sonner";
-
-const initialRows = [
-  { id: 1, sku: "Atlanta Outfitters", price: "12", cost: "$10" },
-  { id: 2, sku: "Chicago Charm Boutique", price: "12", cost: "$10" },
-  { id: 3, sku: "Houston Harvest Market", price: "12", cost: "$10" },
-  { id: 4, sku: "Seattle Skyline Goods", price: "12", cost: "$10" },
-  { id: 5, sku: "Miami Breeze Apparel", price: "12", cost: "$10" },
-  { id: 6, sku: "Miami Breeze Apparel", price: "12", cost: "$10" },
-  { id: 7, sku: "Miami Breeze Apparel", price: "12", cost: "$10" },
-  { id: 8, sku: "Miami Breeze Apparel", price: "12", cost: "$10" },
-  { id: 9, sku: "Miami Breeze Apparel", price: "12", cost: "$10" },
-  { id: 10, sku: "Miami Breeze Apparel", price: "12", cost: "$10" },
-  { id: 11, sku: "Miami Breeze Apparel", price: "12", cost: "$10" },
-];
+import { useGetAllSKU } from "@/src/hooks/useGetSKU";
 
 const SKUDatagrid = () => {
-  const [rows, setRows] = useState(initialRows);
-
-  const handleDelete = (id: number) => {
-    setRows(rows.filter((row) => row.id !== id));
-    toast.success("Store deleted successfully");
-  };
-
+  const { data, isLoading, isError } = useGetAllSKU();
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    if (data) {
+      const formattedRows = data.map((sku: any, index: any) => ({
+        id: sku.ID || `sku-${index + 1}`,
+        sku: sku.Label,
+        price: sku.Price,
+        cost: sku.Cost,
+        class: sku.Class,
+        department: sku.Department,
+      }));
+      setRows(formattedRows);
+    }
+  }, [data]);
   const columns: GridColDef[] = [
     { field: "id", headerName: "S.No", width: 80 },
     { field: "sku", headerName: "SKU", flex: 1 },
     { field: "price", headerName: "Price", flex: 1 },
     { field: "cost", headerName: "Cost", flex: 1 },
+    { field: "class", headerName: "Class", flex: 1 },
+    { field: "department", headerName: "Department", flex: 1 },
+
     {
       field: "actions",
       headerName: "Actions",
@@ -54,6 +58,13 @@ const SKUDatagrid = () => {
       renderCell: () => <DragIndicatorIcon sx={{ cursor: "grab" }} />,
     },
   ];
+  if (isLoading) return <CircularProgress />;
+
+  const handleDelete = (id: string) => {
+    //@ts-ignore
+    setRows(rows.filter((row) => row.id !== id));
+    toast.success("Store deleted successfully");
+  };
 
   return (
     <Box sx={{ height: "60vh", width: "100%" }}>

@@ -1,117 +1,108 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { ModuleRegistry } from "@ag-grid-community/core";
 import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-model";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Box } from "@mui/material";
-import { ColDef, ColGroupDef } from "@ag-grid-community/core"; // ✅ Import the correct types
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { useGetPlannings } from "@/src/hooks/useGetPlannings";
 
 // Register Modules
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
-// Define the row data type
-interface RowDataType {
-  store: string;
-  sku: string;
-  W01: number;
-  W02: number;
-  W03: number;
-  W04: number;
-  W05: number;
-  W06: number;
-  W07: number;
-  W08: number;
-  W09: number;
-  W10: number;
-  GM_Percent: number;
-}
-
-const rowData: RowDataType[] = [
-  {
-    store: "Nashville Melody Music Store",
-    sku: "Rugged Utility Jacket",
-    W01: 200,
-    W02: 0,
-    W03: 0,
-    W04: 0,
-    W05: 0,
-    W06: 0,
-    W07: 0,
-    W08: 0,
-    W09: 0,
-    W10: 0,
-    GM_Percent: 94.6,
-  },
-  {
-    store: "Miami Breeze Apparel",
-    sku: "Lace-Up Combat Boots",
-    W01: 199,
-    W02: 14,
-    W03: 0,
-    W04: 0,
-    W05: 0,
-    W06: 0,
-    W07: 0,
-    W08: 0,
-    W09: 0,
-    W10: 0,
-    GM_Percent: 0.6,
-  },
-  {
-    store: "Chicago Charm Boutique",
-    sku: "Floral Chiffon Wrap Dress",
-    W01: 200,
-    W02: 0,
-    W03: 0,
-    W04: 0,
-    W05: 0,
-    W06: 0,
-    W07: 0,
-    W08: 0,
-    W09: 0,
-    W10: 0,
-    GM_Percent: 54.3,
-  },
-];
-
-// Define column definitions with correct types
-const columnDefs: (ColDef<RowDataType> | ColGroupDef<RowDataType>)[] = [
-  { headerName: "Store", field: "store", pinned: "left", width: 200 },
-  { headerName: "SKU", field: "sku", pinned: "left", width: 200 },
-  {
-    headerName: "Weekly Sales",
-    children: [
-      { headerName: "W01", field: "W01", width: 100 },
-      { headerName: "W02", field: "W02", width: 100 },
-      { headerName: "W03", field: "W03", width: 100 },
-      { headerName: "W04", field: "W04", width: 100 },
-      { headerName: "W05", field: "W05", width: 100 },
-      { headerName: "W06", field: "W06", width: 100 },
-      { headerName: "W07", field: "W07", width: 100 },
-      { headerName: "W08", field: "W08", width: 100 },
-      { headerName: "W09", field: "W09", width: 100 },
-      { headerName: "W10", field: "W10", width: 100 },
-    ],
-  },
-  {
-    headerName: "GM Percent",
-    field: "GM_Percent",
-    width: 120,
-    valueFormatter: (p) => `${p.value} %`,
-    cellStyle: (params) => {
-      if (params.value >= 80)
-        return { backgroundColor: "green", color: "white" };
-      if (params.value >= 50)
-        return { backgroundColor: "yellow", color: "black" };
-      if (params.value >= 30)
-        return { backgroundColor: "orange", color: "black" };
-      return { backgroundColor: "red", color: "white" };
-    },
-  },
-];
-
 const PlanningComponent = () => {
+  const { data, isLoading, error } = useGetPlannings();
+
+  const rowData = useMemo(() => {
+    if (!data) return [];
+
+    const formattedData = data.map((item: any) => {
+      const salesDollars = item["Sales Dollars"] || 0;
+      const costDollars = item["Cost Dollars"] || 0;
+      const gmDollars = salesDollars - costDollars; // Calculate GM Dollars
+      const gmPercent = salesDollars > 0 ? (gmDollars / salesDollars) * 100 : 0; // Calculate GM%
+
+      return {
+        store: item.Store,
+        sku: item.SKU,
+        [`${item.Week}`]: item["Sales Units"],
+        Sales_Dollars: salesDollars,
+        Cost_Dollars: costDollars,
+        GM_Dollars: gmDollars,
+        GM_Percent: gmPercent, // Corrected GM % calculation
+      };
+    });
+
+    // Merge weekly data for the same store + SKU
+    const mergedData: { [key: string]: any } = {};
+    formattedData.forEach((entry: any) => {
+      const key = `${entry.store}-${entry.sku}`;
+      if (!mergedData[key]) {
+        mergedData[key] = { ...entry };
+      } else {
+        mergedData[key] = { ...mergedData[key], ...entry };
+      }
+    });
+
+    return Object.values(mergedData);
+  }, [data]);
+
+  const columnDefs = useMemo(() => {
+    const weeks = Array.from(
+      new Set(data?.map((item: any) => item.Week) || [])
+    );
+
+    return [
+      { headerName: "Store", field: "store", pinned: "left", width: 200 },
+      { headerName: "SKU", field: "sku", pinned: "left", width: 200 },
+      {
+        headerName: "Weekly Sales",
+        children: weeks.map((week) => ({
+          headerName: week,
+          field: week,
+          width: 100,
+          valueFormatter: (params: any) => (params.value ? params.value : "0"),
+        })),
+      },
+      {
+        headerName: "Sales Dollars",
+        field: "Sales_Dollars",
+        width: 120,
+        valueFormatter: (params: any) => `$ ${params.value}`,
+      },
+      {
+        headerName: "Cost Dollars",
+        field: "Cost_Dollars",
+        width: 120,
+        valueFormatter: (params: any) => `$ ${params.value}`,
+      },
+      {
+        headerName: "GM Dollars",
+        field: "GM_Dollars",
+        width: 120,
+        valueFormatter: (params: any) => `$ ${params.value}`,
+      },
+      {
+        headerName: "GM Percent",
+        field: "GM_Percent",
+        width: 120,
+        valueFormatter: (params: any) => `${params.value} %`,
+        cellStyle: (params: any) => {
+          if (params.value >= 40)
+            return { backgroundColor: "green", color: "white" };
+          if (params.value >= 10)
+            return { backgroundColor: "yellow", color: "black" };
+          if (params.value > 5)
+            return { backgroundColor: "orange", color: "black" };
+          return { backgroundColor: "red", color: "white" };
+        },
+      },
+    ];
+  }, [data]);
+
+  if (isLoading) return <CircularProgress />;
+  if (error) return <Typography color="error">Failed to load data</Typography>;
+
   return (
     <Box sx={{ height: "600px", width: "100%" }} className="ag-theme-alpine">
       <AgGridReact
@@ -119,11 +110,7 @@ const PlanningComponent = () => {
         //@ts-ignore
         columnDefs={columnDefs}
         rowModelType="clientSide"
-        defaultColDef={{
-          sortable: true,
-          filter: true,
-          resizable: true,
-        }}
+        defaultColDef={{ sortable: true, filter: true, resizable: true }}
       />
     </Box>
   );

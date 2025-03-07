@@ -2,7 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { DataGrid, gridClasses, GridColDef } from "@mui/x-data-grid";
-import { Box, IconButton, Button, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Button,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { toast } from "sonner";
@@ -54,6 +60,7 @@ const StoreDatagrid = () => {
       renderCell: () => <DragIndicatorIcon sx={{ cursor: "grab" }} />,
     },
   ];
+  if (isLoading) return <CircularProgress />;
 
   return (
     <Box sx={{ height: "60vh", width: "100%" }}>
