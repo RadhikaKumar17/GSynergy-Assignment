@@ -6,23 +6,10 @@ import { Box, IconButton, Button, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { toast } from "sonner";
-
-const initialRows = [
-  { id: 1, store: "Atlanta Outfitters", city: "Atlanta", state: "GA" },
-  { id: 2, store: "Chicago Charm Boutique", city: "Chicago", state: "IL" },
-  { id: 3, store: "Houston Harvest Market", city: "Houston", state: "TX" },
-  { id: 4, store: "Seattle Skyline Goods", city: "Seattle", state: "WA" },
-  { id: 5, store: "Miami Breeze Apparel", city: "Miami", state: "FL" },
-  { id: 6, store: "Miami Breeze Apparel", city: "Miami", state: "FL" },
-  { id: 7, store: "Miami Breeze Apparel", city: "Miami", state: "FL" },
-  { id: 8, store: "Miami Breeze Apparel", city: "Miami", state: "FL" },
-  { id: 9, store: "Miami Breeze Apparel", city: "Miami", state: "FL" },
-  { id: 10, store: "Miami Breeze Apparel", city: "Miami", state: "FL" },
-  { id: 11, store: "Miami Breeze Apparel", city: "Miami", state: "FL" },
-];
+import { storeRows } from "../constants/rowData/storeRows";
 
 const StoreDatagrid = () => {
-  const [rows, setRows] = useState(initialRows);
+  const [rows, setRows] = useState(storeRows);
 
   const handleDelete = (id: number) => {
     setRows(rows.filter((row) => row.id !== id));
