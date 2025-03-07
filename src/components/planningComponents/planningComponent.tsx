@@ -5,11 +5,29 @@ import { ClientSideRowModelModule } from "@ag-grid-community/client-side-row-mod
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import { Box } from "@mui/material";
+import { ColDef, ColGroupDef } from "@ag-grid-community/core"; // ✅ Import the correct types
 
 // Register Modules
 ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
-const rowData = [
+// Define the row data type
+interface RowDataType {
+  store: string;
+  sku: string;
+  W01: number;
+  W02: number;
+  W03: number;
+  W04: number;
+  W05: number;
+  W06: number;
+  W07: number;
+  W08: number;
+  W09: number;
+  W10: number;
+  GM_Percent: number;
+}
+
+const rowData: RowDataType[] = [
   {
     store: "Nashville Melody Music Store",
     sku: "Rugged Utility Jacket",
@@ -57,8 +75,8 @@ const rowData = [
   },
 ];
 
-// Column Definitions
-const columnDefs = [
+// Define column definitions with correct types
+const columnDefs: (ColDef<RowDataType> | ColGroupDef<RowDataType>)[] = [
   { headerName: "Store", field: "store", pinned: "left", width: 200 },
   { headerName: "SKU", field: "sku", pinned: "left", width: 200 },
   {
@@ -98,6 +116,7 @@ const PlanningComponent = () => {
     <Box sx={{ height: "600px", width: "100%" }} className="ag-theme-alpine">
       <AgGridReact
         rowData={rowData}
+        //@ts-ignore
         columnDefs={columnDefs}
         rowModelType="clientSide"
         defaultColDef={{

@@ -11,8 +11,8 @@ import { storeRows } from "../constants/rowData/storeRows";
 const StoreDatagrid = () => {
   const [rows, setRows] = useState(storeRows);
 
-  const handleDelete = (id: number) => {
-    setRows(rows.filter((row) => row.id !== id));
+  const handleDelete = (id: string) => {
+    setRows(rows.filter((row) => row.id && row.id !== id));
     toast.success("Store deleted successfully");
   };
 

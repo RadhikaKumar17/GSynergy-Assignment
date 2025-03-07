@@ -14,6 +14,12 @@ import {
 import { Box, Typography } from "@mui/material";
 import { aggregatedData } from "../constants/aggregatedData";
 
+// Define the type of your aggregatedData items
+interface AggregatedDataType {
+  Store: string;
+  [key: string]: number | string; // Allow dynamic keys like "GM Dollars_W01", "GM %_W01"
+}
+
 const stores = aggregatedData.map((d) => d.Store);
 
 const ChartComponent = () => {
@@ -26,14 +32,20 @@ const ChartComponent = () => {
       <ResponsiveContainer width="100%" height={450}>
         <ComposedChart
           data={aggregatedData
-            .map((d) =>
+            .map((d: AggregatedDataType) =>
               Object.keys(d)
-                .filter((k) => k.includes("GM Dollars"))
-                .map((week) => ({
-                  week: week.replace("GM Dollars_", "W"),
-                  "GM Dollars": d[week],
-                  "GM %": d[`GM %_${week.replace("GM Dollars_", "")}`],
-                }))
+                .filter((k) => k.startsWith("GM Dollars_"))
+                .map((week) => {
+                  const weekNumber = week.replace("GM Dollars_", "W");
+                  return {
+                    week: weekNumber,
+                    "GM Dollars": d[week] as number, // Type assertion to number
+                    "GM %":
+                      (d[
+                        `GM %_${week.replace("GM Dollars_", "")}`
+                      ] as number) || 0,
+                  };
+                })
             )
             .flat()}
         >
