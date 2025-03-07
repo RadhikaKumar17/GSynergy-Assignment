@@ -4,6 +4,7 @@ import "./globals.css";
 import Layout from "./page";
 import AuthGuard from "@/src/components/auth/authGuard";
 import { Toaster } from "sonner";
+import ClientProvider from "@/src/store/clientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
-        <Toaster />
-        <AuthGuard>
-          <Layout children={children} />
-        </AuthGuard>
+        <ClientProvider>
+          <Toaster />
+          <AuthGuard>
+            <Layout children={children} />
+          </AuthGuard>
+        </ClientProvider>
       </body>
     </html>
   );
