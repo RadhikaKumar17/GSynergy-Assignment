@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Overview
 
-## Getting Started
+This project converts a given CSV file into a set of backend APIs, providing a structured and accessible way to interact with the data. The backend APIs are hosted on **[Render](https://render.com/)**.
 
-First, run the development server:
+## Features Implemented
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **CSV to API Conversion**: The provided CSV data has been successfully transformed into accessible APIs.
+- **User Authentication**: Implemented sign-in functionality.
+- **Store Management**: Added the functionality to add a store.
+- **Cypress Testing**: Conducted Cypress testing for the Sign-In component to ensure reliability.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Backend API
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The APIs are hosted at:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🔗 **Base URL:** [https://gsynergy-backend.onrender.com](https://gsynergy-backend.onrender.com)
 
-## Learn More
+### API Endpoints
 
-To learn more about Next.js, take a look at the following resources:
+| Endpoint      | Method | Description                          |
+| ------------- | ------ | ------------------------------------ |
+| `/stores` | GET   | Get all store data       |
+| `/skus` | GET   | Get all sku data                     |
+| `/chart`   | GET    | Get all  chart data |
+| `/planning`   | GET    | Get all  planning data |
+| `/calculations`   | GET    | Get all  calculations data |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Testing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Cypress testing has been performed for the **Sign-In** component to ensure proper authentication flow and prevent regressions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## How to Run Locally
+
+1. Clone the repository:
+   ```sh
+   git clone <repo-url>
+   cd <repo-folder>
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Run the backend server:
+   ```sh
+   npm start
+   ```
+4. Run Cypress tests:
+   ```sh
+   npx cypress open
+   ```
+
+## Future Improvements
+
+- Extend API functionality for advanced queries.
+- Enhance frontend UI for store management.
+- Improve authentication with role-based access control.
+
+---
+
+For any issues or suggestions, feel free to open an issue or contribute to the repository!
