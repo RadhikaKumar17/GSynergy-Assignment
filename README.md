@@ -4,7 +4,11 @@ This project converts a given CSV file into a set of backend APIs, providing a s
 ## Developed Application 
 - **Github Link**:(https://github.com/RadhikaKumar17/GSynergy-Assignment.git)
 - **Backend code Github Link**:(https://github.com/RadhikaKumar17/GSynergy-backend.git)
-## APPLICATION FLOW LINK 
+
+## APPLICATION FLOW LINK  (HOSTED LINK)
+- (https://gsynergy-assignment.onrender.com/signin)
+- SCREEN RECORDING LINK  OF HOSTED WORKING APPLICATION - (https://drive.google.com/file/d/11LEPhs0ftEwVhvtZ-lKtihlGwbWz0iGs/view?usp=sharing)
+## APPLICATION FLOW LINK  (LOCAL HOST)
 (https://drive.google.com/file/d/1EdsM8C4SfjfqnoiGEkwR_u-uD7gZ71il/view?usp=sharing)
 ## CYPRESS UNIT TESTING OF SIGN IN COMPONENT LINK 
 (https://drive.google.com/file/d/1NJOZAuO94SPSgJjfzenYed30VtAbOO3y/view?usp=sharing)
