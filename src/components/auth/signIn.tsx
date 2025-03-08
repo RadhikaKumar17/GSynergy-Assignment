@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import {
   Box,
   Stack,
@@ -15,6 +15,7 @@ import {
   InputAdornment,
   Link,
   Button,
+  Tooltip,
 } from "@mui/material";
 
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -54,6 +55,9 @@ const SignIn = () => {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -87,6 +91,30 @@ const SignIn = () => {
           <Link href="#" variant="subtitle2">
             Get started
           </Link>
+        </Stack>
+        <Stack spacing={0.5} sx={{ mt: 1 }}>
+          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+            Copy email and password:
+          </Typography>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="body2">test@example.com</Typography>
+            <Tooltip title="Copy Email">
+              <IconButton
+                onClick={() => handleCopy("test@example.com")}
+                size="small"
+              >
+                <ContentCopyIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="body2">password</Typography>
+            <Tooltip title="Copy Password">
+              <IconButton onClick={() => handleCopy("password")} size="small">
+                <ContentCopyIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </Stack>
         </Stack>
       </Stack>
 
@@ -127,6 +155,9 @@ const SignIn = () => {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
+                      // onClick={() => setShowPassword((prev) => !prev)}
+                      // edge="end"
+                      data-cy="toggle-password"
                       onClick={() => setShowPassword((prev) => !prev)}
                       edge="end"
                     >
