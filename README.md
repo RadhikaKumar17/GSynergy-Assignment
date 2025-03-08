@@ -1,7 +1,15 @@
 # Project Overview
 
 This project converts a given CSV file into a set of backend APIs, providing a structured and accessible way to interact with the data. The backend APIs are hosted on **[Render](https://render.com/)**.
-
+## Developed Application 
+- **Github Link**:(https://github.com/RadhikaKumar17/GSynergy-Assignment.git)
+- **Backend code Github Link**:(https://github.com/RadhikaKumar17/GSynergy-backend.git)
+## Tech Stack Used 
+- Nextjs
+- Typescript
+- Nodejs
+- Express
+- For UI [MUI] (https://mui.com/?srsltid=AfmBOoprZn3KOqaPkUh4pcycS1qlhihnu9rvACkr9dxypp5IdgKuScfu)
 ## Features Implemented
 
 - **CSV to API Conversion**: The provided CSV data has been successfully transformed into accessible APIs.
