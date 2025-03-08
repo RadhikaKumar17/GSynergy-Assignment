@@ -60,3 +60,25 @@ Cypress testing has been performed for the **Sign-In** component to ensure prope
 ---
 
 For any issues or suggestions, feel free to open an issue or contribute to the repository!
+
+Below are some screenshots of working apis of the CSV data that was provided
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/64bc48c4-e89e-4b25-8bbb-94be9c841e64" width="45%">
+    </td>
+    <td align="center">
+      <img src="(https://github.com/user-attachments/assets/a0ae4f00-78d5-4c0b-bda3-a5ca3f702d92" width="45%">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/b2bb98b3-3ef0-4e67-ad90-9d39c550d500" width="45%">
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/5fb72dba-7a4b-435f-a2cc-3bc4155c6be9" width="45%">
+    </td>
+  </tr>
+</table>
+
+
